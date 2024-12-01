@@ -1,0 +1,87 @@
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:cardCornerRadius="21dp"
+        app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp">
+
+        <Button
+                android:id="@+id/button_habit"
+                android:layout_width="394dp"
+                android:layout_height="85dp"
+                android:backgroundTint="@color/blue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="MissingConstraints"/>
+
+
+
+        <!-- Название привычки -->
+        <TextView
+                android:id="@+id/tv_habit_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Чтение 15 минут в день"
+                android:textSize="16sp"
+                android:fontFamily="@font/gilroy_bold"
+                android:textColor="@android:color/white"
+                app:layout_constraintTop_toTopOf="@+id/button_habit"
+                app:layout_constraintStart_toStartOf="@+id/button_habit"
+                app:layout_constraintEnd_toStartOf="@+id/checkbox_habit"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"/>
+
+        <!-- Иконка частоты привычки -->
+
+
+        <!-- Частота привычки-->
+
+        <ImageView
+                android:id="@+id/habit_reply_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_reply"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_habit_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_habit_name"
+                android:layout_marginBottom="22dp"
+                android:layout_marginTop="3dp"
+                app:tint="@android:color/white"
+        />
+        <TextView
+                android:id="@+id/habit_reply_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ежедневно"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/gilroy_medium"
+                android:textSize="10sp"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintTop_toTopOf="@+id/habit_reply_icon"
+                app:layout_constraintLeft_toRightOf="@id/habit_reply_icon"
+        />
+
+        <!-- Чекбокс выполнения -->
+        <CheckBox
+                android:id="@+id/checkbox_habit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/button_habit"
+                app:layout_goneMarginRight="30dp"
+                android:layout_marginEnd="16dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
