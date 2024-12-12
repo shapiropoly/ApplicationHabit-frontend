@@ -1,7 +1,6 @@
 <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
@@ -13,15 +12,16 @@
             android:layout_height="wrap_content"
             android:padding="0dp">
 
-        <Button
-                android:id="@+id/button_habit"
-                android:layout_width="394dp"
-                android:layout_height="85dp"
-                android:backgroundTint="@color/blue"
+        <ImageView
+                android:id="@+id/card_check_up_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/checkup_card_background"
+                android:scaleType="fitXY"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:ignore="MissingConstraints"/>
-
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
 
         <!-- Название привычки -->
@@ -33,11 +33,11 @@
                 android:textSize="16sp"
                 android:fontFamily="@font/gilroy_bold"
                 android:textColor="@android:color/white"
-                app:layout_constraintTop_toTopOf="@+id/button_habit"
-                app:layout_constraintStart_toStartOf="@+id/button_habit"
+                app:layout_constraintTop_toTopOf="@+id/card_check_up_background"
+                app:layout_constraintStart_toStartOf="@+id/card_check_up_background"
                 app:layout_constraintEnd_toStartOf="@+id/checkbox_habit"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"/>
+                android:layout_marginTop="20dp"/>
 
         <!-- Иконка частоты привычки -->
 
@@ -72,13 +72,14 @@
         <!-- Чекбокс выполнения -->
         <CheckBox
                 android:id="@+id/checkbox_habit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@android:color/white"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:buttonTint="@android:color/transparent"
+                android:background="@drawable/check_box"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="@+id/button_habit"
+                app:layout_constraintRight_toRightOf="@+id/card_check_up_background"
                 app:layout_goneMarginRight="30dp"
                 android:layout_marginEnd="16dp"/>
 

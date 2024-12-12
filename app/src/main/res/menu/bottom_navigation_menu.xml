@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/nav_check_up"
+            android:enabled="true"
+            android:icon="@drawable/menu_ic_check_up"
+            android:title=""
+    />
+    <item
+            android:id="@+id/nav_home"
+            android:enabled="true"
+            android:icon="@drawable/menu_ic_menu"
+            android:title=""
+    />
+    <item
+            android:id="@+id/nav_habits_list"
+            android:enabled="true"
+            android:icon="@drawable/menu_ic_list"
+            android:title=""
+    />
+    <item
+            android:id="@+id/nav_profile"
+            android:enabled="true"
+            android:icon="@drawable/menu_ic_profile"
+            android:title=""
+    />
+</menu>

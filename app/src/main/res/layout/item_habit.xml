@@ -37,7 +37,7 @@
         <!-- Иконка привычки -->
 
         <ImageView
-                android:id="@+id/habit_icon"
+                android:id="@+id/habit_image"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/ic_book"
