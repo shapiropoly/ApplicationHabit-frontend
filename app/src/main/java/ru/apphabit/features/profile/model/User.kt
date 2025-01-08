@@ -1,4 +1,4 @@
-package ru.habit_app.app.features.users.model
+package ru.apphabit.features.profile.model
 
 import java.time.LocalDate
 

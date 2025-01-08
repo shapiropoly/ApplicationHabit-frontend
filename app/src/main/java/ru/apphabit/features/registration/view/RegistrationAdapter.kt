@@ -93,7 +93,7 @@ class HabitAdapter(
         val imageView: ImageView = itemView.findViewById(R.id.habit_image)
         val categoryIdText: TextView = itemView.findViewById(R.id.habit_category_text)
 
-        fun bind(id: Int, title: String, description: String, image: String, categoryId: Int) {
+        fun bind(id: Int?, title: String, description: String, image: String, categoryId: Int?) {
             titleText.text = title
             descriptionText.text = description
 

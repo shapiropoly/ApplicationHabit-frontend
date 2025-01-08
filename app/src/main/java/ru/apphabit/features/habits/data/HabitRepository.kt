@@ -8,7 +8,7 @@ interface HabitRepository {
     suspend fun getAllHabits(): List<Habit>
     suspend fun getHabitById(id: Int): Habit
     suspend fun addHabit(habit: Habit): Habit
-    fun updateHabit(id: Int, train: Habit): Call<Habit>
+    fun updateHabit(id: Int, habit: Habit): Call<Habit>
     fun deleteHabit(id:Int): Call<Habit>
 }
 
@@ -36,8 +36,8 @@ class HabitRepositoryImpl(private val service: HabitApiService): HabitRepository
         return body
     }
 
-    override fun updateHabit(id: Int, train: Habit) : Call<Habit> {
-        return service.updateHabit(id, train)
+    override fun updateHabit(id: Int, habit: Habit) : Call<Habit> {
+        return service.updateHabit(id, habit)
     }
 
     override fun deleteHabit(id: Int): Call<Habit> {

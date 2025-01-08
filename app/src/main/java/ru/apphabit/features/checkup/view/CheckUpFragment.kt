@@ -44,12 +44,12 @@ class CheckUpFragment {
 //
 //        vm.getAllHabits()
 //    }
-
-
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = ProfileFragment()
-    }
+//
+//
+//
+//
+//    companion object {
+//        @JvmStatic
+//        fun newInstance() = ProfileFragment()
+//    }
 }

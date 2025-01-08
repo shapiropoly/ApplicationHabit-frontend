@@ -3,10 +3,10 @@ package ru.apphabit.features.profile.data
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import ru.habit_app.app.features.users.model.User
+import ru.apphabit.features.profile.model.User
 
 interface UserApiService {
-    @GET
+    @GET("users")
     suspend fun getAllUsers(): Response<List<User>>
 
     @POST("add_user")

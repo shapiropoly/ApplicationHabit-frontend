@@ -2,7 +2,7 @@ package ru.apphabit.features.profile.data
 
 import android.util.Log
 import retrofit2.Call
-import ru.habit_app.app.features.users.model.User
+import ru.apphabit.features.profile.model.User
 
 interface UserRepository {
     suspend fun getAllUsers(): List<User>
@@ -18,10 +18,10 @@ class UserRepositoryImpl (private val service: UserApiService): UserRepository {
         val response = service.getAllUsers()
         if (response.isSuccessful) {
             val body = response.body()
-            Log.d("checkup", "Response: $body")
+            Log.d("users", "Response: $body")
             return body ?: emptyList()
         } else {
-            Log.e("checkup", "Error: ${response.errorBody()?.string()}")
+            Log.e("users", "Error: ${response.errorBody()?.string()}")
             return emptyList()
         }
     }

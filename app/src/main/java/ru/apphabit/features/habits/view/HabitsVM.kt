@@ -14,11 +14,12 @@ import ru.apphabit.features.habits.model.Habit
 
 class HabitsVM (private val repository: HabitRepository) : ViewModel() {
 
-//    private val _habit = MutableLiveData<Habit>()
-//    val habit: LiveData<Habit> get() = _habit
-
     private val _habits = MutableLiveData<List<Habit>>()
     val habits: LiveData<List<Habit>> get() = _habits
+
+    private val _habit = MutableLiveData<Habit>()
+    val habit: LiveData<Habit> get() = _habit
+
 
     init {
         getAllHabits()
@@ -32,11 +33,19 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         }
     }
 
-//    fun getHabitById(id: Int) {
-//        viewModelScope.launch {
-//            _habit.value = repository.getHabitById(id)
-//        }
-//    }
+    fun addHabit(habit: Habit) {
+        viewModelScope.launch {
+            val newHabit = repository.addHabit(habit)
+            Log.d("Add habit from HabitsVM", "Habit: $habit")
+            _habit.value = newHabit
+        }
+    }
+
+    fun getHabitById(id: Int) {
+        viewModelScope.launch {
+            _habit.value = repository.getHabitById(id)
+        }
+    }
 
     fun updateHabit(id: Int, habit: Habit) {
         repository.updateHabit(id, habit).enqueue(object : Callback<Habit> {

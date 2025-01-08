@@ -180,7 +180,7 @@
         <!-- Кнопка "Смотреть" -->
 
         <Button
-                android:id="@+id/btn_view"
+                android:id="@+id/button_habit_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Смотреть"

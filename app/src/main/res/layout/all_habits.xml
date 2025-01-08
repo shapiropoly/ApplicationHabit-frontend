@@ -1,13 +1,18 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<FrameLayout
+        android:id="@+id/fragment_container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+
+>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".features.habits.view.HabitsFragment">
+            tools:context=".features.habits.view.AllHabitsFragment">
 
 
 
@@ -23,91 +28,22 @@
                 android:textColor="@android:color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginStart="16dp"
         />
 
 
         <!-- Категории -->
 
-        <HorizontalScrollView
-                android:id="@+id/categories_scroll"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/buttons_category_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
                 app:layout_constraintTop_toBottomOf="@id/title_block"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="25dp"
-                android:paddingVertical="5dp">
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="16dp"
+                tools:listitem="@layout/item_button_category"/>
 
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-
-                <!-- Кнопки категорий -->
-
-                <Button
-                        android:id="@+id/btn_health"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Здоровье"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:textSize="14sp"
-                        android:backgroundTint="@color/light_green"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="16dp"/>
-
-                <Button
-                        android:id="@+id/btn_sport"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Спорт"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:textSize="14sp"
-                        android:backgroundTint="@color/light_gray"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
-
-                <Button
-                        android:id="@+id/btn_intellect"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Интеллект"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:textSize="14sp"
-                        android:backgroundTint="@color/light_gray"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
-
-                <Button
-                        android:id="@+id/btn_nutrition"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Питание"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:textSize="14sp"
-                        android:backgroundTint="@color/light_gray"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
-
-                <Button
-                        android:id="@+id/btn_condition"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Состояние"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:textSize="14sp"
-                        android:backgroundTint="@color/light_gray"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
-            </LinearLayout>
-        </HorizontalScrollView>
 
 
         <!-- Фон для поисковой строки -->
@@ -120,9 +56,8 @@
                 android:backgroundTint="@color/light_gray"
                 android:contentDescription="Search background"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/categories_scroll"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"/>
+                app:layout_constraintTop_toBottomOf="@id/buttons_category_recycler"
+                android:layout_marginStart="16dp"/>
 
         <!-- Поле ввода текста -->
 
@@ -147,10 +82,10 @@
                 app:layout_constraintVertical_bias="0.5"/>
 
 
-        <!-- Иконка фильтра -->
+        <!-- Иконка добавления привычки -->
 
         <ImageButton
-                android:id="@+id/img_btn_filter"
+                android:id="@+id/img_button_add_habit"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:background="@drawable/square_gray"

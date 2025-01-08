@@ -3,51 +3,63 @@ package ru.apphabit.features.checkup.view
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.apphabit.features.checkup.data.CheckUpRepository
 import ru.apphabit.features.checkup.model.CheckUp
+import ru.apphabit.features.habits.data.HabitRepository
+import ru.apphabit.features.habits.model.Habit
+import ru.apphabit.features.profile.data.UserRepository
+import ru.apphabit.features.profile.model.User
 
-class CheckUpVM (private val repository: CheckUpRepository) : ViewModel() {
+class CheckUpVM (private val repositoryCheckUp: CheckUpRepository,
+                 private val repositoryUser: UserRepository,
+                 private val repositoryHabit: HabitRepository
+    ) : ViewModel() {
 
     private val _checkup = MutableLiveData<List<CheckUp>>()
     val checkup: LiveData<List<CheckUp>> get() = _checkup
 
-    init {
-        getAllCheckUp()
-    }
+    private val _user = MutableLiveData<List<User>>()
+    val user: LiveData<List<User>> get() = _user
 
-    fun getAllCheckUp() {
-        viewModelScope.launch {
-            val checkupList = repository.getAllCheckUps()
-            _checkup.value = checkupList
-        }
-    }
+    private val _habit = MutableLiveData<List<Habit>>()
+    val habit: LiveData<List<Habit>> get() = _habit
 
-    fun updateCheckUp(id: Int, checkup: CheckUp) {
-        repository.updateCheckUp(id, checkup).enqueue(object : Callback<CheckUp> {
-            override fun onResponse(call: Call<CheckUp>, response: Response<CheckUp>) {
-                // handle the response
-            }
 
-            override fun onFailure(call: Call<CheckUp>, t: Throwable) {
-                // handle the failure
-            }
-        })
-    }
 
-    fun deleteCheckUp(id: Int) {
-        repository.deleteCheckUp(id).enqueue(object : Callback<CheckUp> {
-            override fun onResponse(call: Call<CheckUp>, response: Response<CheckUp>) {
-                // handle the response
-            }
+//    fun getAllCheckUp(date: LocalDate) {
+//        viewModelScope.launch {
+//            val checkupList = repositoryCheckUp.getAllCheckUps(date)
+//            _checkup.value = checkupList
+//
+//
+//            val user = repositoryUser.getUserById()
+//            val habit = repositoryHabit.getHabitById()
+//            _user.value.
+//        }
+//    }
 
-            override fun onFailure(call: Call<CheckUp>, t: Throwable) {
-                // handle the failure
-            }
-        })
-    }
+
+//    fun updateCheckUp(id: Int, checkup: CheckUp) {
+//        repository.updateCheckUp(id, checkup).enqueue(object : Callback<CheckUp> {
+//            override fun onResponse(call: Call<CheckUp>, response: Response<CheckUp>) {
+//                // handle the response
+//            }
+//
+//            override fun onFailure(call: Call<CheckUp>, t: Throwable) {
+//                // handle the failure
+//            }
+//        })
+//    }
+
+//    fun deleteCheckUp(id: Int) {
+//        repository.deleteCheckUp(id).enqueue(object : Callback<CheckUp> {
+//            override fun onResponse(call: Call<CheckUp>, response: Response<CheckUp>) {
+//                // handle the response
+//            }
+//
+//            override fun onFailure(call: Call<CheckUp>, t: Throwable) {
+//                // handle the failure
+//            }
+//        })
+//    }
 }

@@ -6,7 +6,7 @@ import retrofit2.http.*
 import ru.apphabit.features.habits.model.Habit
 
 interface HabitApiService {
-    @GET("all")
+    @GET("habits")
     suspend fun getAllHabits(): Response<List<Habit>>
 
     @POST("add_habit")
