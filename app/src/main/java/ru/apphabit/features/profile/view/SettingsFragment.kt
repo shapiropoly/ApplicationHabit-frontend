@@ -1,29 +1,22 @@
 package ru.apphabit.features.profile.view
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
 import ru.apphabit.app.MainActivity
-import ru.apphabit.features.habits.view.*
-import ru.apphabit.features.habits.view.HabitsVM;
 import ru.apphabit.features.profile.model.User
-import ru.apphabit.features.registration.view.RegistrationFragment
+import ru.apphabit.features.authorisation.view.RegistrationFragment
 import java.time.LocalDate
 
 class SettingsFragment : Fragment() {
     private val vmUsers: UsersVM by viewModel()
-    private lateinit var userAdapter: UserAdapter
     private var userId: Int = 0
     private var password = ""
     private lateinit var dateRegistration: LocalDate
