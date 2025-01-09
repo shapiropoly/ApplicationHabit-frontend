@@ -25,7 +25,7 @@ class UsersVM (private val repository: UserRepository) : ViewModel() {
         getAllUsers()
     }
 
-    private fun getAllUsers() {
+    fun getAllUsers() {
         viewModelScope.launch {
             val usersList = repository.getAllUsers()
             Log.d("UsersVM", "Users received: $usersList")

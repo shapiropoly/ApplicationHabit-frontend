@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
 import ru.apphabit.app.MainActivity
 import ru.apphabit.features.habits.model.Habit
-import ru.apphabit.features.habits.model.HabitDTO
 import kotlin.properties.Delegates
 
 class AddHabitFragment : Fragment() {
