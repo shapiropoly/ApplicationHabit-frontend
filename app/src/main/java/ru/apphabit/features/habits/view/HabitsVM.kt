@@ -47,6 +47,12 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         }
     }
 
+    fun getHabitsByUserId(userId: Int) {
+        viewModelScope.launch {
+            _habit.value = repository.getHabitById(userId)
+        }
+    }
+
     fun updateHabit(id: Int, habit: Habit) {
         repository.updateHabit(id, habit).enqueue(object : Callback<Habit> {
             override fun onResponse(call: Call<Habit>, response: Response<Habit>) {

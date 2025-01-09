@@ -14,11 +14,11 @@ interface CheckUpApiService {
     @POST("add_checkup")
     suspend fun addCheckUp(@Body checkup: CheckUp, @Body userToHabitId: Int): Response<CheckUp>
 
-//    @GET("checkups/{id}")
-//    suspend fun getCheckUpByDateAndUser(@Path("date") date: LocalDate, @Path("user_to_habit_id") userToHabitId: Int): Response<CheckUp>
+    @GET("checkups/{user_id}")
+    suspend fun getCheckUpsByUserId(@Path("user_id") userId: Int) : Response<CheckUp>
 
-//    @PUT("update_checkup/{id}")
-//    fun updateCheckUp(@Path("id") id: Int, @Body checkup: CheckUp): Call<CheckUp>
+    @PUT("update_checkup/{id}")
+    fun updateCheckUp(@Path("id") id: Int, @Body checkup: CheckUp): Call<CheckUp>
 
     @DELETE("delete_checkup/{id}")
     fun deleteCheckUp(@Path("id") id: Int): Call<CheckUp>

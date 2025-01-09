@@ -16,11 +16,17 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
 import ru.apphabit.app.MainActivity
+import ru.apphabit.features.checkup.view.CheckUpVM
 import ru.apphabit.features.habits.view.*
 
 class ProfileFragment : Fragment() {
     private val vmUsers: UsersVM by viewModel()
     private val vmHabits: HabitsVM by viewModel()
+    private lateinit var profileHabitsAdapter: ProfileHabitsAdapter
+
+
+    private lateinit var viewModel: CheckUpVM
+    private lateinit var adapter: ProfileHabitsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -38,6 +44,16 @@ class ProfileFragment : Fragment() {
 
         val addNewHabit = view.findViewById<ImageButton>(R.id.img_button_add_habit)
         val buttonHabitView = view.findViewById<Button>(R.id.button_habit_view)
+        val buttonSettings = view.findViewById<Button>(R.id.profile_button_settings)
+
+        val recyclerViewUserHabits = requireView().findViewById<RecyclerView>(R.id.item_profile_habits_recycler)
+
+        recyclerViewUserHabits.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = profileHabitsAdapter
+        }
+
 
 
 //        vmHabits.habits.observe(viewLifecycleOwner) { habits ->
@@ -62,9 +78,9 @@ class ProfileFragment : Fragment() {
 //            override fun afterTextChanged(s: Editable?) {}
 //        })
 
-        addNewHabit.setOnClickListener {
+        buttonSettings.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, AddHabitFragment())
+                .replace(R.id.fragment_container, SettingsFragment())
                 .addToBackStack(null)
                 .commit()
 

@@ -15,6 +15,9 @@ interface HabitApiService {
     @GET("habits/{id}")
     suspend fun getHabitById(@Path("id") id: Int): Response<Habit>
 
+    @GET("habits/{user_id}")
+    suspend fun getHabitsByUserId(@Path("user_id") userId: Int): Response<List<Habit>>
+
     @PUT("update_habit/{id}")
     fun updateHabit(@Path("id") id: Int, @Body habit: Habit): Call<Habit>
 

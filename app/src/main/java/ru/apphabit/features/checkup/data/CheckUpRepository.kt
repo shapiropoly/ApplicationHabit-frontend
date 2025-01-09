@@ -2,19 +2,23 @@ package ru.apphabit.features.checkup.data
 
 import android.util.Log
 import retrofit2.Call
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
 import ru.apphabit.features.checkup.model.CheckUp
 import java.time.LocalDate
 
 interface CheckUpRepository {
-    suspend fun getAllCheckUps(date: LocalDate): List<CheckUp>
+    suspend fun getAllCheckUps(): List<CheckUp>
     suspend fun addCheckUp(checkup: CheckUp, userToHabitId: Int): CheckUp
-//    suspend fun getCheckUpByDateAndUser(date: LocalDate, idUser: Int): CheckUp
-//    fun updateCheckUp(id: Int, checkup: CheckUp): Call<CheckUp>
+    suspend fun getCheckUpsByUserId(userId: Int): CheckUp
+    fun updateCheckUp(id: Int, checkup: CheckUp): Call<CheckUp>
     fun deleteCheckUp(id: Int): Call<CheckUp>
 }
 
 class CheckUpRepositoryImpl (private val service: CheckUpApiService): CheckUpRepository {
-    override suspend fun getAllCheckUps(date: LocalDate): List<CheckUp> {
+
+    override suspend fun getAllCheckUps(): List<CheckUp> {
         val response = service.getAllCheckUps()
         if (response.isSuccessful) {
             val body = response.body()
@@ -31,13 +35,14 @@ class CheckUpRepositoryImpl (private val service: CheckUpApiService): CheckUpRep
         return body
     }
 
-//    override suspend fun getCheckUpByDateAndUser(date: LocalDate, idUser: Int): CheckUp {
-//        val body = service.getCheckUpByDateAndUser(date: LocalDate, userToHabitId: Int).body()!!
-//        return body
-//    }
-//    override fun updateCheckUp(id: Int, checkup: CheckUp): Call<CheckUp> {
-//        return service.updateCheckUp(id, checkup)
-//    }
+    override suspend fun getCheckUpsByUserId(userId: Int): CheckUp {
+        val body = service.getCheckUpsByUserId(userId).body()!!
+        return body
+    }
+
+    override fun updateCheckUp(id: Int, checkup: CheckUp): Call<CheckUp> {
+        return service.updateCheckUp(id, checkup)
+    }
 
     override fun deleteCheckUp(id: Int): Call<CheckUp> {
         return service.deleteCheckUp(id)

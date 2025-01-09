@@ -79,7 +79,7 @@
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/item_habit_recycler"
+                android:id="@+id/item_profile_habits_recycler"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/subtitle_my_habits"

@@ -38,7 +38,7 @@
 
         <!-- Название привычки -->
         <TextView
-                android:id="@+id/tv_habit_name"
+                android:id="@+id/profile_habit_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Чтение 15 минут в день"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="22dp"/>
 
         <ImageView
-                android:id="@+id/profile_cross_delete"
+                android:id="@+id/button_profile_delete_habit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/profile_cross_delete"
