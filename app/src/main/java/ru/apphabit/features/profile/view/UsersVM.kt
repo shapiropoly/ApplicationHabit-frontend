@@ -33,7 +33,7 @@ class UsersVM (private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun addHabit(user: User) {
+    fun addUser(user: User) {
         viewModelScope.launch {
             val newUser = repository.addUser(user)
             Log.d("Add user from UsersVM", "User: $user")
@@ -44,6 +44,12 @@ class UsersVM (private val repository: UserRepository) : ViewModel() {
     fun getUserById(id: Int) {
         viewModelScope.launch {
             _user.value = repository.getUserById(id)
+        }
+    }
+
+    fun getUserByEmail(email: String) {
+        viewModelScope.launch {
+            _user.value = repository.getUserByEmail(email)
         }
     }
 

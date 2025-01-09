@@ -8,6 +8,7 @@ interface UserRepository {
     suspend fun getAllUsers(): List<User>
     suspend fun addUser(user: User): User
     suspend fun getUserById(id: Int): User
+    suspend fun getUserByEmail(email: String): User
     fun updateUser(id: Int, user: User): Call<User>
     fun deleteUser(id: Int): Call<User>
 }
@@ -33,6 +34,11 @@ class UserRepositoryImpl (private val service: UserApiService): UserRepository {
 
     override suspend fun getUserById(id: Int): User {
         val body = service.getUserById(id).body()!!
+        return body
+    }
+
+    override suspend fun getUserByEmail(email: String): User {
+        val body = service.getUserByEmail(email).body()!!
         return body
     }
 

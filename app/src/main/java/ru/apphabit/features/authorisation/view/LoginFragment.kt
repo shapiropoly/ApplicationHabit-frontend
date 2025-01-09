@@ -8,29 +8,41 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
+import ru.apphabit.features.profile.view.UsersVM
 
 class LoginFragment : Fragment() {
+    private val vmUsers: UsersVM by viewModel()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.login, container, false)
+        return inflater.inflate(R.layout.login, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val emailInput = view.findViewById<EditText>(R.id.login_input_email)
         val passwordInput = view.findViewById<EditText>(R.id.login_input_password)
         val loginButton = view.findViewById<Button>(R.id.login_button)
         val registerLink = view.findViewById<Button>(R.id.register_link)
+
+        vmUsers.user.observe(viewLifecycleOwner) { user ->
+            if (user != null && user.password == passwordInput.text.toString().trim()) {
+                Toast.makeText(context, "Добро пожаловать, ${user.name}!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Неверный e-mail или пароль", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         loginButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Все поля должны быть заполнены", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Вход выполнен", Toast.LENGTH_SHORT).show()
+                vmUsers.getUserByEmail(email)
             }
         }
 
@@ -40,7 +52,5 @@ class LoginFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
-        return view
     }
 }

@@ -15,6 +15,9 @@ interface UserApiService {
     @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: Int): Response<User>
 
+    @GET("users/{email}")
+    suspend fun getUserByEmail(@Path("email") email: String): Response<User>
+
     @PUT("update_user/{id}")
     fun updateUser(@Path("id") id: Int, @Body user: User): Call<User>
 
