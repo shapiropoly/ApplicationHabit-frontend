@@ -15,6 +15,8 @@ import ru.apphabit.features.profile.view.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
+    private var userId: Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,8 +30,8 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_habits_list -> setCurrentFragment(AllHabitsFragment.newInstance(), hideBottomNav = false)
 //                R.id.nav_check_up -> setCurrentFragment(CheckUpFragment.newInstance())
-//                R.id.nav_home -> setCurrentFragment(HomeFragment.newInstance())
-                R.id.nav_profile -> setCurrentFragment(ProfileFragment.newInstance(), hideBottomNav = false)
+                R.id.nav_home -> setCurrentFragment(HomeFragment.newInstance())
+                R.id.nav_profile -> setCurrentFragment(ProfileFragment.newInstance(userId), hideBottomNav = false)
             }
             true
         }

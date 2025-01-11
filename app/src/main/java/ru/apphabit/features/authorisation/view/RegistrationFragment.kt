@@ -52,9 +52,9 @@ class RegistrationFragment : Fragment() {
                 username = username,
                 email = email,
                 password = password,
-                dateRegistration = LocalDate.now(),
-                dateLastActivity = LocalDate.now()
-                )
+                dateRegistration = LocalDate.now().toString(),
+                dateLastActivity = LocalDate.now().toString()
+            )
 
             vmUsers.addUser(user)
         }

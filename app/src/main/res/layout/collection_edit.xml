@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+        android:id="@+id/fragment_edit_collection"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/collection_edit_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_return"
+                    app:navigationIconTint="@color/black"
+                    app:title="Название коллекции"
+                    android:background="@color/white"
+                    app:titleTextColor="@color/black"
+                    app:titleCentered="true"
+                    android:textAppearance="@style/CustomToolbarTitleText"
+            />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+            >
+
+                <ImageView
+                        android:id="@+id/collection_edit_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/collection_edit_image"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                />
+
+                <TextView
+                        android:id="@+id/upload_photo_collection_edit_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Загрузить фото"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/collection_edit_image"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="10dp"
+                />
+
+                <TextView
+                        android:id="@+id/title_collection_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Название"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@+id/upload_photo_collection_edit_text"
+                        android:layout_marginTop="30dp"
+                />
+
+                <EditText
+                        android:id="@+id/title_collection_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="53dp"
+                        android:hint="Название коллекции"
+                        android:inputType="text"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:textSize="14sp"
+                        android:padding="12dp"
+                        android:textColorHint="@color/dark_gray"
+                        android:backgroundTint="@color/light_gray"
+                        android:background="@drawable/input_background"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title_collection_text"
+                        android:layout_marginTop="10dp"
+
+
+                />
+
+                <TextView
+                        android:id="@+id/description_collection_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Описание"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@+id/title_collection_edit"
+                        android:layout_marginTop="18dp"
+                />
+
+                <EditText
+                        android:id="@+id/description_collection_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="110dp"
+                        android:hint="Описание коллекции"
+                        android:inputType="text"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:textSize="14sp"
+                        android:padding="12dp"
+                        android:textColorHint="@color/dark_gray"
+                        android:backgroundTint="@color/light_gray"
+                        android:background="@drawable/input_background"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/description_collection_text"
+                        android:layout_marginTop="10dp"
+                        android:gravity="start|top"
+                />
+
+                <TextView
+                        android:id="@+id/collection_list_habit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Привычки в коллекции"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@+id/description_collection_edit"
+                        android:layout_marginTop="18dp"
+
+                />
+
+                <Spinner
+                        android:id="@+id/select_list_habits_to_collection"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp"
+                        android:background="@drawable/input_background"
+                        android:padding="12dp"
+                        android:textSize="14sp"
+                        android:hint="Выбрать привычки"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:textColorHint="@color/dark_gray"
+                        android:backgroundTint="@color/light_gray"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/collection_list_habit_text"
+                        android:layout_marginTop="10dp"
+                />
+
+
+                <Button
+                        android:id="@+id/button_collection_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp"
+                        app:layout_constraintTop_toBottomOf="@+id/select_list_habits_to_collection"
+                        android:layout_marginTop="70dp"
+                        android:text="Изменить коллекцию"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/light_gray"
+                />
+
+                <Button
+                        android:id="@+id/button_collection_delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp"
+                        app:layout_constraintTop_toBottomOf="@+id/button_collection_update"
+                        android:layout_marginTop="12dp"
+                        android:text="Удалить коллекцию"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/red"
+                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

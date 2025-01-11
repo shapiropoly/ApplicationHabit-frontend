@@ -26,7 +26,7 @@
 
         <!-- Название привычки -->
         <TextView
-                android:id="@+id/tv_habit_name"
+                android:id="@+id/checkup_card_habit_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Чтение 15 минут в день"
@@ -35,7 +35,7 @@
                 android:textColor="@android:color/white"
                 app:layout_constraintTop_toTopOf="@+id/card_check_up_background"
                 app:layout_constraintStart_toStartOf="@+id/card_check_up_background"
-                app:layout_constraintEnd_toStartOf="@+id/checkbox_habit"
+                app:layout_constraintEnd_toStartOf="@+id/checkup_card_habit_checkbox"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="20dp"/>
 
@@ -49,15 +49,15 @@
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:src="@drawable/ic_reply"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_habit_name"
+                app:layout_constraintLeft_toLeftOf="@+id/checkup_card_habit_title"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_habit_name"
+                app:layout_constraintTop_toBottomOf="@+id/checkup_card_habit_title"
                 android:layout_marginBottom="22dp"
                 android:layout_marginTop="3dp"
                 app:tint="@android:color/white"
         />
         <TextView
-                android:id="@+id/habit_reply_text"
+                android:id="@+id/checkup_card_habit_frequency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ежедневно"
@@ -71,7 +71,7 @@
 
         <!-- Чекбокс выполнения -->
         <CheckBox
-                android:id="@+id/checkbox_habit"
+                android:id="@+id/checkup_card_habit_checkbox"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:buttonTint="@android:color/transparent"

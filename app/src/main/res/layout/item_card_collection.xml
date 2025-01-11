@@ -54,7 +54,7 @@
         <!-- Название привычки -->
 
         <TextView
-                android:id="@+id/habit_title"
+                android:id="@+id/card_collection_title"
                 android:layout_width="142dp"
                 android:layout_height="wrap_content"
                 android:text="Коллеккция 1"

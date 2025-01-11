@@ -53,6 +53,16 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         }
     }
 
+    fun getHabitsByCollectionId(collectionId: Int) {
+        viewModelScope.launch {
+            _habits.value = repository.getHabitsByCollectionId(collectionId)
+        }
+    }
+
+    suspend fun getHabitByIdSuspend(id: Int): Habit {
+        return repository.getHabitById(id)
+    }
+
     fun updateHabit(id: Int, habit: Habit) {
         repository.updateHabit(id, habit).enqueue(object : Callback<Habit> {
             override fun onResponse(call: Call<Habit>, response: Response<Habit>) {

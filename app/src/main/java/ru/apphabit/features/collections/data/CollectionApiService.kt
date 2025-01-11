@@ -8,7 +8,7 @@ import ru.apphabit.features.collections.model.Collection
 
 
 interface CollectionApiService {
-    @GET
+    @GET("collections")
     suspend fun getAllCollections(): Response<List<Collection>>
 
     @POST("add_collection")

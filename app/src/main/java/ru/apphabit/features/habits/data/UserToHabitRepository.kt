@@ -10,7 +10,7 @@ interface UserToHabitRepository {
     suspend fun getUserToHabitByUserId(userId: Int): List<UserToHabit>
     suspend fun addUserToHabit(userToHabit: UserToHabit): UserToHabit
     fun updateUserToHabit(id: Int, userToHabit: UserToHabit): Call<UserToHabit>
-    fun deleteUserToHabit(id:Int): Call<UserToHabit>
+    suspend fun deleteUserToHabit(id: Int)
 }
 
 class UserToHabitRepositoryImpl(private val service: UserToHabitApiService): UserToHabitRepository {
@@ -32,6 +32,9 @@ class UserToHabitRepositoryImpl(private val service: UserToHabitApiService): Use
     }
 
     override suspend fun getUserToHabitByUserId(userId: Int): List<UserToHabit> {
+        val response = service.getUserToHabitByUserId(userId)
+        Log.d("UserToHabitRepository", "Response body: ${response.body()}")
+
         val body = service.getUserToHabitByUserId(userId).body()!!
         return body
     }
@@ -45,7 +48,11 @@ class UserToHabitRepositoryImpl(private val service: UserToHabitApiService): Use
         return service.updateUserToHabit(id, userToHabit)
     }
 
-    override fun deleteUserToHabit(id: Int): Call<UserToHabit> {
-        return service.deleteUserToHabit(id)
+    override suspend fun deleteUserToHabit(id: Int) {
+        val response = service.deleteUserToHabit(id)
+        if (!response.isSuccessful) {
+            Log.e("userToHabit", "Failed to delete habit with id $id: ${response.errorBody()?.string()}")
+        }
     }
+
 }

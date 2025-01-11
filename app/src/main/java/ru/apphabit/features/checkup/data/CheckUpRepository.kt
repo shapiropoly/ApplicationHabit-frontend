@@ -2,22 +2,19 @@ package ru.apphabit.features.checkup.data
 
 import android.util.Log
 import retrofit2.Call
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
 import ru.apphabit.features.checkup.model.CheckUp
-import java.time.LocalDate
+import ru.apphabit.features.checkup.model.UserHabitCheckUp
 
 interface CheckUpRepository {
     suspend fun getAllCheckUps(): List<CheckUp>
-    suspend fun addCheckUp(checkup: CheckUp, userToHabitId: Int): CheckUp
-    suspend fun getCheckUpsByUserId(userId: Int): CheckUp
+    suspend fun addCheckUp(checkup: CheckUp): CheckUp
+    suspend fun getCheckUpsByUserId(userId: Int): List<CheckUp>
+    suspend fun getCheckUpsWithDetailsByUserId(userId: Int): List<UserHabitCheckUp>
     fun updateCheckUp(id: Int, checkup: CheckUp): Call<CheckUp>
     fun deleteCheckUp(id: Int): Call<CheckUp>
 }
 
 class CheckUpRepositoryImpl (private val service: CheckUpApiService): CheckUpRepository {
-
     override suspend fun getAllCheckUps(): List<CheckUp> {
         val response = service.getAllCheckUps()
         if (response.isSuccessful) {
@@ -30,13 +27,18 @@ class CheckUpRepositoryImpl (private val service: CheckUpApiService): CheckUpRep
         }
     }
 
-    override suspend fun addCheckUp(checkup: CheckUp, userToHabitId: Int): CheckUp {
-        val body = service.addCheckUp(checkup, userToHabitId).body()!!
+    override suspend fun addCheckUp(checkup: CheckUp): CheckUp {
+        val body = service.addCheckUp(checkup).body()!!
         return body
     }
 
-    override suspend fun getCheckUpsByUserId(userId: Int): CheckUp {
+    override suspend fun getCheckUpsByUserId(userId: Int): List<CheckUp> {
         val body = service.getCheckUpsByUserId(userId).body()!!
+        return body
+    }
+
+    override suspend fun getCheckUpsWithDetailsByUserId(userId: Int): List<UserHabitCheckUp> {
+        val body = service.getCheckUpsWithDetailsByUserId(userId).body()!!
         return body
     }
 
@@ -47,5 +49,4 @@ class CheckUpRepositoryImpl (private val service: CheckUpApiService): CheckUpRep
     override fun deleteCheckUp(id: Int): Call<CheckUp> {
         return service.deleteCheckUp(id)
     }
-
 }

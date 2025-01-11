@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
+import ru.apphabit.features.habits.view.HabitsVM
 
 class HomeFragment : Fragment() {
 
-    private val vm: CollectionsVM by viewModel()
+    private val vmCollections: CollectionsVM by viewModel()
+    private val vmHabits: HabitsVM by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -24,7 +26,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = requireView().findViewById<RecyclerView>(R.id.habits_recycler)
+        val recyclerViewCollections = requireView().findViewById<RecyclerView>(R.id.habits_recycler)
+        val recyclerViewHabits = requireView().findViewById<RecyclerView>(R.id.habits_recycler)
         val llm = LinearLayoutManager(requireView().context)
         recyclerView.layoutManager = llm
         recyclerView.setHasFixedSize(true)

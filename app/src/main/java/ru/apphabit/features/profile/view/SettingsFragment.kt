@@ -17,10 +17,10 @@ import java.time.LocalDate
 
 class SettingsFragment : Fragment() {
     private val vmUsers: UsersVM by viewModel()
-    private var userId: Int = 0
+    private var userId: Int = 1
     private var password = ""
-    private lateinit var dateRegistration: LocalDate
-    private lateinit var dateLastActivity: LocalDate
+    private lateinit var dateRegistration: String
+    private lateinit var dateLastActivity: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,13 +122,19 @@ class SettingsFragment : Fragment() {
             dateLastActivity = dateLastActivity
         )
 
+        Log.d("UpdateUser", "$updatedUser");
+
         vmUsers.updateUser(userId, updatedUser)
+        Log.d("UpdateUser", "UpdateUser: $vmUsers");
+
         Toast.makeText(requireContext(), "Аккаунт обновлен", Toast.LENGTH_SHORT).show()
         backActivityUpdate()
     }
 
     private fun deleteUser() {
         vmUsers.deleteUser(userId)
+        Log.d("DeleteUser", "DeleteUser: $vmUsers");
+
         Toast.makeText(requireContext(), "Аккаунт удален", Toast.LENGTH_SHORT).show()
         backActivityDelete()
     }

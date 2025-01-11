@@ -6,6 +6,7 @@ import java.time.LocalDate
 data class HabitWithCheckUp (
     val habit: Habit,
     val frequency: String,
-    val dateCheckUp: LocalDate,
+    val dateStart: LocalDate, // на экране чекапа, с самой старой даты из списка будет начинаться календарь
+    var dateCheckUp: LocalDate,
     val checkUp: CheckUp?
 )

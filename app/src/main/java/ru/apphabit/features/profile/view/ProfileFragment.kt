@@ -1,101 +1,107 @@
 package ru.apphabit.features.profile.view
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
 import ru.apphabit.app.MainActivity
-import ru.apphabit.features.checkup.view.CheckUpVM
-import ru.apphabit.features.habits.view.*
+import ru.apphabit.features.habits.model.UserToHabit
+import ru.apphabit.features.habits.view.HabitsVM
+import ru.apphabit.features.habits.view.UserToHabitVM
+
+const val USER_ID = "user_id"
 
 class ProfileFragment : Fragment() {
-    private val vmUsers: UsersVM by viewModel()
     private val vmHabits: HabitsVM by viewModel()
+    private val userToHabitVM: UserToHabitVM by viewModel()
     private lateinit var profileHabitsAdapter: ProfileHabitsAdapter
+    private var userId: Int = 1  // предполагается, что userId по умолчанию 1
 
-
-    private lateinit var viewModel: CheckUpVM
-    private lateinit var adapter: ProfileHabitsAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userId = it.getInt(USER_ID, 1)  // Если USER_ID отсутствует, используем значение по умолчанию
+        }
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? MainActivity)?.setBottomNavVisibility(true)
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: добавить списком привычки, которые есть у пользователя
-        //  + возможность удалить из "ведения" + настройка частоты
+        (activity as? MainActivity)?.setBottomNavVisibility(true)
 
-
-        val addNewHabit = view.findViewById<ImageButton>(R.id.img_button_add_habit)
-        val buttonHabitView = view.findViewById<Button>(R.id.button_habit_view)
         val buttonSettings = view.findViewById<Button>(R.id.profile_button_settings)
-
         val recyclerViewUserHabits = requireView().findViewById<RecyclerView>(R.id.item_profile_habits_recycler)
 
-        recyclerViewUserHabits.apply {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = profileHabitsAdapter
+        profileHabitsAdapter = ProfileHabitsAdapter { userToHabit ->
+            // Записываем нажатие на кнопку "Удалить"
+            Log.d("ProfileFragment", "Deleting habit with ID: ${userToHabit.habitId}")
+            userToHabit.habitId.let {
+                userToHabitVM.deleteUserToHabit(it)
+                Log.d("ProfileFragment", "Habit with ID: $it deleted")
+            }
         }
 
+        recyclerViewUserHabits.layoutManager = LinearLayoutManager(context)
+        recyclerViewUserHabits.adapter = profileHabitsAdapter
 
 
-//        vmHabits.habits.observe(viewLifecycleOwner) { habits ->
-//            originalHabits = habits
-//            habitAdapter.updateHabits(habits)
-//        }
-//
-//        vmCategories.categories.observe(viewLifecycleOwner) { categories ->
-//            Log.d("HabitsFragment", "Categories loaded: $categories")
-//            categoryAdapter.updateCategories(categories)
-//        }
+        userToHabitVM.userToHabits.observe(viewLifecycleOwner) { userToHabits ->
+            val enrichedUserToHabits = mutableListOf<UserToHabit>()
 
-//        Log.d("HabitsFragment", "ViewModel loaded: $vmCategories")
+            userToHabits.forEach { userToHabit ->
+                vmHabits.getHabitById(userToHabit.habitId)
+                Log.d("ProfileFragment", "userToHabit.habitId: $userToHabit.habitId")
+                // Асинхронно запрашиваем Habit
+                vmHabits.habit.observe(viewLifecycleOwner) { habit ->
+                    Log.d("ProfileFragment", "Habits: $habit")
+                    val enrichedUserToHabit = userToHabit.copy(habit = habit)
+                    enrichedUserToHabits.add(enrichedUserToHabit)
 
-//        searchInput.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                filterText = s?.toString() ?: ""
-//                applyFilters()
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {}
-//        })
+                    // Обновляем адаптер после получения всех данных
+                    if (enrichedUserToHabits.size == userToHabits.size) {
+                        profileHabitsAdapter.submitList(enrichedUserToHabits)
+                    }
+                }
+            }
+        }
+
+        // Fetch user habits
+        Log.d("ProfileFragment", "Fetching habits for user ID: $userId")
+        userToHabitVM.getUserToHabitByUserId(userId)
 
         buttonSettings.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment())
+                .replace(R.id.fragment_profile, SettingsFragment())
                 .addToBackStack(null)
                 .commit()
 
             (activity as? MainActivity)?.setBottomNavVisibility(false)
+            Log.d("ProfileFragment", "Navigating to SettingsFragment")
         }
-
-        vmUsers.getAllUsers()
-        vmHabits.getAllHabits()
     }
-
-
 
     companion object {
         @JvmStatic
-        fun newInstance() = ProfileFragment()
+        fun newInstance(userId: Int) = ProfileFragment().apply {
+            arguments = Bundle().apply {
+                putInt(USER_ID, userId)
+            }
+        }
     }
-
 }

@@ -11,10 +11,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.apphabit.features.collections.data.CollectionRepository
 import ru.apphabit.features.collections.model.Collection
+import ru.apphabit.features.habits.data.HabitRepository
+import ru.apphabit.features.habits.model.Habit
 
-class CollectionsVM (private val repository: CollectionRepository) : ViewModel(){
+class CollectionsVM (
+    private val repositoryCollections: CollectionRepository,
+    private val repositoryHabits: HabitRepository
+) : ViewModel() {
+
     private val _collections = MutableLiveData<List<Collection>>()
     val collections: LiveData<List<Collection>> get() = _collections
+
+    private val _habits = MutableLiveData<List<Habit>>()
+    val habits: LiveData<List<Habit>> get() = _habits
+
+    private val _collection = MutableLiveData<Collection>()
+    val collection: LiveData<Collection> get() = _collection
+
 
     init {
         getAllCollections()
@@ -22,15 +35,34 @@ class CollectionsVM (private val repository: CollectionRepository) : ViewModel()
 
     fun getAllCollections() {
         viewModelScope.launch {
-            val collectionsList = repository.getAllCollections()
+            val collectionsList = repositoryCollections.getAllCollections()
             Log.d("CollectionsVM", "Collections received: $collectionsList")
             _collections.value = collectionsList
         }
     }
 
+    fun addCollection(collection: Collection) {
+        viewModelScope.launch {
+            val newCollection = repositoryCollections.addCollection(collection)
+            Log.d("Add collection from CollectionsVM", "Collection: $collection")
+            _collection.value = newCollection
+        }
+    }
 
-    fun updateCollection(id: Int, habit: Collection) {
-        repository.updateCollection(id, habit).enqueue(object : Callback<Collection> {
+    fun getCollectionById(id: Int) {
+        viewModelScope.launch {
+            _collection.value = repositoryCollections.getCollectionById(id)
+        }
+    }
+
+    fun getHabitsByCollectionId(collectionId: Int) {
+        viewModelScope.launch {
+            _habits.value = repositoryHabits.getHabitsByCollectionId(collectionId)
+        }
+    }
+
+    fun updateCollection(id: Int, collection: Collection, habitsList: List<Habit>) {
+        repositoryCollections.updateCollection(id, collection).enqueue(object : Callback<Collection> {
             override fun onResponse(call: Call<Collection>, response: Response<Collection>) {
                 // handle the response
             }
@@ -42,7 +74,7 @@ class CollectionsVM (private val repository: CollectionRepository) : ViewModel()
     }
 
     fun deleteCollection(id: Int) {
-        repository.deleteCollection(id).enqueue(object : Callback<Collection> {
+        repositoryCollections.deleteCollection(id).enqueue(object : Callback<Collection> {
             override fun onResponse(call: Call<Collection>, response: Response<Collection>) {
                 // handle the response
             }

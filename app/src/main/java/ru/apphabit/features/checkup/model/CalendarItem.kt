@@ -1,5 +1,6 @@
 package ru.apphabit.features.checkup.model
 
-data class CalendarItem(
+data class CalendarItem (
     val dayOfWeek: String,
-    val date: String)
+    val date: String
+)

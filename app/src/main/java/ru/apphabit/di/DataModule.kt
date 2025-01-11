@@ -11,6 +11,8 @@ import ru.apphabit.features.profile.data.UserRepository
 import ru.apphabit.features.profile.data.UserRepositoryImpl
 import ru.apphabit.features.habits.data.CategoryRepository
 import ru.apphabit.features.habits.data.CategoryRepositoryImpl
+import ru.apphabit.features.habits.data.UserToHabitRepository
+import ru.apphabit.features.habits.data.UserToHabitRepositoryImpl
 
 
 val dataModule = module {
@@ -18,4 +20,5 @@ val dataModule = module {
     singleOf(::CategoryRepositoryImpl) bind CategoryRepository::class
     singleOf(::UserRepositoryImpl) bind UserRepository::class
     singleOf(::CollectionRepositoryImpl) bind CollectionRepository::class
+    singleOf(::UserToHabitRepositoryImpl) bind UserToHabitRepository::class
 }

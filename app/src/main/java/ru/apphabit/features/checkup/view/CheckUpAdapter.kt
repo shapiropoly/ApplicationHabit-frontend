@@ -1,5 +1,6 @@
 package ru.apphabit.features.checkup.view
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +20,10 @@ import ru.apphabit.features.habits.model.Habit
 import ru.apphabit.features.habits.view.EditHabitFragment
 import ru.apphabit.features.profile.model.User
 import ru.apphabit.features.profile.view.ProfileHabitsAdapter
+import java.time.LocalDate
 
 class CheckUpAdapter(
-    private var checkUps: MutableList<CheckUp?> = mutableListOf(),
+    private var habitsWithCheckUp: MutableList<HabitWithCheckUp?> = mutableListOf(),
     private val onCheckBoxClicked: (Int, Boolean) -> Unit
 ) : RecyclerView.Adapter<CheckUpAdapter.CheckUpViewHolder>() {
 
@@ -31,28 +34,39 @@ class CheckUpAdapter(
     }
 
     override fun getItemCount(): Int {
-        return checkUps.size
+        return habitsWithCheckUp.size
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: CheckUpViewHolder, position: Int) {
-        val checkUp = checkUps[position]
-        holder.bind(checkUp, onCheckBoxClicked)
+        val habitWithCheckUp = habitsWithCheckUp[position]
+        holder.bind(habitWithCheckUp, onCheckBoxClicked)
     }
 
-    inner class CheckUpViewHolder(itemView: View)
-        : RecyclerView.ViewHolder(itemView) {
-//        private val habitTextView: TextView = itemView.findViewById(R.id.habit_name)
-//        private val checkBox: CheckBox = itemView.findViewById(R.id.habit_completed_checkbox)
+    inner class CheckUpViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val habitTextView: TextView = itemView.findViewById(R.id.checkup_card_habit_title)
+        private val checkBox: CheckBox = itemView.findViewById(R.id.checkup_card_habit_checkbox)
 
+        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(
-            checkUp: CheckUp?,
+            habitWithCheckUp: HabitWithCheckUp?,
             onCheckBoxClicked: (Int, Boolean) -> Unit
         ) {
-//            habitTextView.text = checkUp.checkUp.habitName
-//            checkBox.isChecked = checkUp.checkUp.isCompleted
-//            checkBox.setOnCheckedChangeListener { _, isChecked ->
-//                onCheckBoxClicked(checkUp.checkUp.id, isChecked)
-//            }
+            val habit = habitWithCheckUp?.habit
+            val checkUp = habitWithCheckUp?.checkUp
+
+            habitTextView.text = habit?.title ?: "Название отсутствует"
+
+            if (checkUp != null) {
+                checkBox.isChecked = checkUp.dateCheckUp == LocalDate.now()
+
+                checkBox.setOnCheckedChangeListener { _, isChecked ->
+                    onCheckBoxClicked(checkUp.id, isChecked)
+                }
+            } else {
+                checkBox.isChecked = false
+                checkBox.setOnCheckedChangeListener(null)
+            }
         }
     }
 }

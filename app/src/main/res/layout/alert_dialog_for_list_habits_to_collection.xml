@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Button
+            android:id="@+id/select_habits_to_collection_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выбрать привычки"
+            android:padding="12dp"
+            tools:ignore="MissingConstraints"
+            android:fontFamily="@font/gilroy_medium"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/light_gray"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

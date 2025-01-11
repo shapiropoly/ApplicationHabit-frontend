@@ -3,6 +3,7 @@ package ru.apphabit.features.habits.data
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+import ru.apphabit.features.habits.model.Habit
 import ru.apphabit.features.habits.model.UserToHabit
 
 interface UserToHabitApiService {
@@ -15,12 +16,12 @@ interface UserToHabitApiService {
     @GET("user_to_habit/{id}")
     suspend fun getUserToHabitById(@Path("id") id: Int): Response<UserToHabit>
 
-    @GET("user_to_habit/{user_id}")
+    @GET("user_to_habits/user/{user_id}")
     suspend fun getUserToHabitByUserId(@Path("user_id") userId: Int): Response<List<UserToHabit>>
 
     @PUT("update_user_to_habit/{id}")
     fun updateUserToHabit(@Path("id") id: Int, @Body userToHabit: UserToHabit): Call<UserToHabit>
 
     @DELETE("delete_user_to_habit/{id}")
-    fun deleteUserToHabit(@Path("id") id: Int): Call<UserToHabit>
+    suspend fun deleteUserToHabit(@Path("id") id: Int): Response<Unit>
 }

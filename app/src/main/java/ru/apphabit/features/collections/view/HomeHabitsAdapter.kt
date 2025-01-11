@@ -3,18 +3,16 @@ package ru.apphabit.features.collections.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.apphabit.R
 import ru.apphabit.features.collections.model.Collection
 
 
-class HomeAdapter (
+class HomeHabitsAdapter (
     private val collections: List<Collection?>,
     val fragmentManager: FragmentManager)
-    : RecyclerView.Adapter<HomeAdapter.CollectionHolder>() {
+    : RecyclerView.Adapter<HomeHabitsAdapter.CollectionHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -50,5 +48,7 @@ class HomeAdapter (
 //                }
         }
     }
+
+
 }
 
