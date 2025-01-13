@@ -18,7 +18,6 @@ import ru.apphabit.features.collections.model.Collection
 class CollectionsAdapter (
     private var collections: MutableList<Collection?> = mutableListOf(),
     val fragmentManager: FragmentManager,
-    private val habitAdapter: HabitAdapter,
     private val onCollectionClick: (Int?) -> Unit
 ) : RecyclerView.Adapter<CollectionsAdapter.CollectionsHolder>() {
 
@@ -64,10 +63,10 @@ class CollectionsAdapter (
             }
 
             itemView.setOnClickListener {
-                fragmentManager.beginTransaction().apply {
-                    replace(R.id.fragment_main, CollectionEditFragment.newInstance(selectedCollectionId))
-                    commit()
-                }
+//                fragmentManager.beginTransaction().apply {
+//                    replace(R.id.fragment_main, CollectionEditFragment.newInstance(selectedCollectionId))
+//                    commit()
+//                }
             }
         }
     }

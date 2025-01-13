@@ -4,6 +4,8 @@ import BASE_URL
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.apphabit.features.collections.data.CollectionApiService
+import ru.apphabit.features.collections.data.HabitToCollectionApiService
 import ru.apphabit.features.habits.data.CategoryApiService
 import ru.apphabit.features.habits.data.HabitApiService
 import ru.apphabit.features.habits.data.UserToHabitApiService
@@ -28,8 +30,14 @@ fun provideUserService(retrofit: Retrofit): UserApiService =
 fun provideCategoryService(retrofit: Retrofit): CategoryApiService =
     retrofit.create(CategoryApiService::class.java)
 
+fun provideCollectionService(retrofit: Retrofit): CollectionApiService =
+    retrofit.create(CollectionApiService::class.java)
+
 fun provideUserToHabitService(retrofit: Retrofit): UserToHabitApiService =
     retrofit.create(UserToHabitApiService::class.java)
+
+fun provideHabitToCollectionService(retrofit: Retrofit): HabitToCollectionApiService =
+    retrofit.create(HabitToCollectionApiService::class.java)
 
 
 val networkModule = module {
@@ -38,5 +46,7 @@ val networkModule = module {
     single { provideHabitService(get()) }
     single { provideCategoryService(get()) }
     single { provideUserToHabitService(get()) }
+    single { provideHabitToCollectionService(get()) }
+    single { provideCollectionService(get()) }
     single { provideUserService(get()) }
 }

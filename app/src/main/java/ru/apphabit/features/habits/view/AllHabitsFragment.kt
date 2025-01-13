@@ -44,7 +44,6 @@ class AllHabitsFragment : Fragment() {
         val recyclerViewCategories = requireView().findViewById<RecyclerView>(R.id.buttons_category_recycler)
         val searchInput = view.findViewById<EditText>(R.id.search_input)
         val addNewHabit = view.findViewById<ImageButton>(R.id.img_button_add_habit)
-        val buttonHabitView = view.findViewById<Button>(R.id.button_habit_view)
 
         habitAdapter = HabitAdapter(emptyList(), childFragmentManager) { habit ->
             parentFragmentManager.beginTransaction()
@@ -60,7 +59,7 @@ class AllHabitsFragment : Fragment() {
             adapter = habitAdapter
         }
 
-        categoryAdapter = CategoryAdapter(mutableListOf(), childFragmentManager, habitAdapter) { categoryId ->
+        categoryAdapter = CategoryAdapter(mutableListOf(), childFragmentManager) { categoryId ->
             selectedCategoryId = categoryId
             applyFilters()
         }

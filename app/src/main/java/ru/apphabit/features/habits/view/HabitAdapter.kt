@@ -40,8 +40,6 @@ class HabitAdapter (
         notifyDataSetChanged()
     }
 
-    fun getHabits(): List<Habit?> = habits
-
     inner class HabitHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
 
@@ -62,7 +60,6 @@ class HabitAdapter (
                 else -> imageView.setImageResource(R.drawable.ic_intelligence)
             }
 
-            // Обработка нажатия на кнопку "Редактировать"
             buttonHabitView.setOnClickListener {
                 onHabitClick(habit)
                 fragmentManager.beginTransaction().apply {
@@ -70,13 +67,6 @@ class HabitAdapter (
                     commit()
                 }
             }
-
-//            itemView.setOnClickListener {
-//                fragmentManager.beginTransaction().apply {
-//                    replace(R.id.flFragment, TrainEditFragment.newInstance(id))
-//                    commit()
-//                }
-//            }
         }
     }
 }

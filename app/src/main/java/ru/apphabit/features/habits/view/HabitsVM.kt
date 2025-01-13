@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,12 +34,15 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         }
     }
 
-    fun addHabit(habit: Habit) {
-        viewModelScope.launch {
-            val newHabit = repository.addHabit(habit)
-            Log.d("Add habit from HabitsVM", "Habit: $habit")
-            _habit.value = newHabit
-        }
+    fun addHabit(habit: Habit, callbackSuccess: () -> Unit) {
+        repository.addHabit(habit).enqueue(object : Callback<Habit> {
+            override fun onResponse(call: Call<Habit>, response: Response<Habit>) {
+                callbackSuccess()
+            }
+
+            override fun onFailure(call: Call<Habit>, t: Throwable) {
+            }
+        })
     }
 
     fun getHabitById(id: Int) {
@@ -53,19 +57,24 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         }
     }
 
-    fun getHabitsByCollectionId(collectionId: Int) {
+    fun getHabitsByCollectionId(collectionId: Int): List<Habit> {
+        var filteredHabits: List<Habit> = emptyList()
         viewModelScope.launch {
-            _habits.value = repository.getHabitsByCollectionId(collectionId)
+            filteredHabits = repository.getHabitsByCollectionId(collectionId)
+            Log.d("HabitsVM", "List habits received: $filteredHabits")
         }
+        return filteredHabits
     }
+
 
     suspend fun getHabitByIdSuspend(id: Int): Habit {
         return repository.getHabitById(id)
     }
 
-    fun updateHabit(id: Int, habit: Habit) {
+    fun updateHabit(id: Int, habit: Habit, callbackSuccess: () -> Unit) {
         repository.updateHabit(id, habit).enqueue(object : Callback<Habit> {
             override fun onResponse(call: Call<Habit>, response: Response<Habit>) {
+                callbackSuccess()
                 // handle the response
             }
 
@@ -75,9 +84,10 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         })
     }
 
-    fun deleteHabit(id: Int) {
+    fun deleteHabit(id: Int, callbackSuccess: () -> Unit) {
         repository.deleteHabit(id).enqueue(object : Callback<Habit> {
             override fun onResponse(call: Call<Habit>, response: Response<Habit>) {
+                callbackSuccess()
                 // handle the response
             }
 

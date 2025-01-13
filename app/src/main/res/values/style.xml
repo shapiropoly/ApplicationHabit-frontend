@@ -4,4 +4,9 @@
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/gilroy_medium</item>
     </style>
+
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/input_background</item>
+        <item name="android:stateListAnimator">@null</item> <!-- Убирает материал-анимации -->
+    </style>
 </resources>

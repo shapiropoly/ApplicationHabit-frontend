@@ -13,14 +13,16 @@
             android:padding="0dp">
 
 
-        <ImageView android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:src="@drawable/habit_for_home_background"
-                   android:scaleType="fitXY"
-                   app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintBottom_toBottomOf="parent"
-                   app:layout_constraintLeft_toLeftOf="parent"
-                   app:layout_constraintRight_toRightOf="parent"/>
+        <ImageView
+                android:id="@+id/habit_for_home_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/habit_for_home_background"
+                android:scaleType="fitXY"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
         <!-- Подложка для иконки привычки -->
 
@@ -52,7 +54,7 @@
         <!-- Название привычки -->
 
         <TextView
-                android:id="@+id/habit_title"
+                android:id="@+id/habit_for_home_title"
                 android:layout_width="142dp"
                 android:layout_height="wrap_content"
                 android:text="Чтение \n15 минут в день"
@@ -97,7 +99,7 @@
         <!-- Категория привычки-->
 
         <TextView
-                android:id="@+id/habit_category_text"
+                android:id="@+id/habit_for_home_category_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Интеллект"

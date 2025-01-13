@@ -10,13 +10,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.apphabit.features.collections.data.CollectionRepository
+import ru.apphabit.features.collections.data.HabitToCollectionRepository
 import ru.apphabit.features.collections.model.Collection
+import ru.apphabit.features.collections.model.HabitToCollection
 import ru.apphabit.features.habits.data.HabitRepository
 import ru.apphabit.features.habits.model.Habit
 
 class CollectionsVM (
     private val repositoryCollections: CollectionRepository,
-    private val repositoryHabits: HabitRepository
+    private val repositoryHabits: HabitRepository,
+    private val repositoryHabitToCollection: HabitToCollectionRepository
 ) : ViewModel() {
 
     private val _collections = MutableLiveData<List<Collection>>()
@@ -83,5 +86,27 @@ class CollectionsVM (
                 // handle the failure
             }
         })
+    }
+
+    fun bindListHabitsToCollections(habits: List<Habit>, collectionId: Int) {
+        viewModelScope.launch {
+            for (habit in habits) {
+
+                val habitToCollection = habit.id?.let {
+                    HabitToCollection (
+                        habitId = it,
+                        collectionId = collectionId
+                    )
+                }
+
+                if (habitToCollection != null) {
+                    repositoryHabitToCollection.addHabitToCollection(habitToCollection)
+                }
+            }
+//            val newCollection = repositoryCollections.addCollection(collection)
+//            Log.d("Add collection from CollectionsVM", "Collection: $collection")
+//            _collection.value = newCollection
+        }
+
     }
 }

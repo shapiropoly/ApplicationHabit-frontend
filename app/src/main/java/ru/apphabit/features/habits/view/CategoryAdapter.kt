@@ -17,7 +17,6 @@ import ru.apphabit.features.habits.model.Category
 class CategoryAdapter(
     private var categories: MutableList<Category?> = mutableListOf(),
     val fragmentManager: FragmentManager,
-    private val habitAdapter: HabitAdapter,
     private val onCategoryClick: (Int?) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
 

@@ -5,6 +5,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import ru.apphabit.features.collections.data.CollectionRepository
 import ru.apphabit.features.collections.data.CollectionRepositoryImpl
+import ru.apphabit.features.collections.data.HabitToCollectionRepository
+import ru.apphabit.features.collections.data.HabitToCollectionRepositoryImpl
 import ru.apphabit.features.habits.data.HabitRepository
 import ru.apphabit.features.habits.data.HabitRepositoryImpl
 import ru.apphabit.features.profile.data.UserRepository
@@ -21,4 +23,5 @@ val dataModule = module {
     singleOf(::UserRepositoryImpl) bind UserRepository::class
     singleOf(::CollectionRepositoryImpl) bind CollectionRepository::class
     singleOf(::UserToHabitRepositoryImpl) bind UserToHabitRepository::class
+    singleOf(::HabitToCollectionRepositoryImpl) bind HabitToCollectionRepository::class
 }

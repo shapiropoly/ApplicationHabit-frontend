@@ -71,32 +71,45 @@ class AddHabitFragment : Fragment() {
         }
 
         toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
-            (activity as? MainActivity)?.setBottomNavVisibility(true)
+            requireFragmentManager().beginTransaction().apply {
+                replace(R.id.main_fragment, AllHabitsFragment.newInstance())
+                commit()
+            }
         }
 
 
         buttonSaveHabit.setOnClickListener {
             val habitTitle = inputTextHabitTitle.text.toString().trim()
             val habitDescription = inputTextHabitDescription.text.toString().trim()
-            val habitImage = selectedImageUri
 
             if (habitTitle.isBlank()) {
                 Toast.makeText(requireContext(), "Введите название привычки", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            when (selectedCategoryId) {
+                1 -> imageAddHabit.setImageResource(R.drawable.image_health)
+                2 -> imageAddHabit.setImageResource(R.drawable.image_hobby)
+                3 -> imageAddHabit.setImageResource(R.drawable.image_sleep)
+                else -> imageAddHabit.setImageResource(R.drawable.image_another)
+            }
+
             val newHabit = Habit(
                 id = null,
                 title = habitTitle,
                 description = habitDescription,
-                image = habitImage,
+                image = "image_another",
                 categoryId = selectedCategoryId
             )
 
-            vmHabits.addHabit(newHabit)
-            requireActivity().onBackPressed()
-            (activity as? MainActivity)?.setBottomNavVisibility(true)
+            vmHabits.addHabit(newHabit, ::changeFragment)
+        }
+    }
+
+    fun changeFragment() {
+        requireFragmentManager().beginTransaction().apply {
+            replace(R.id.main_fragment, AllHabitsFragment.newInstance())
+            commit()
         }
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragment_edit_collection"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -148,23 +149,23 @@
 
                 />
 
-                <Spinner
+                <Button
                         android:id="@+id/select_list_habits_to_collection"
                         android:layout_width="match_parent"
                         android:layout_height="53dp"
-                        android:background="@drawable/input_background"
-                        android:padding="12dp"
-                        android:textSize="14sp"
-                        android:hint="Выбрать привычки"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:textColorHint="@color/dark_gray"
+                        android:layout_marginTop="10dp"
                         android:backgroundTint="@color/light_gray"
+                        android:fontFamily="@font/gilroy_medium"
+                        android:gravity="start|center_vertical"
+                        android:hint="Выбрать привычки"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textColorHint="@color/dark_gray"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/collection_list_habit_text"
-                        android:layout_marginTop="10dp"
                 />
-
 
                 <Button
                         android:id="@+id/button_collection_update"

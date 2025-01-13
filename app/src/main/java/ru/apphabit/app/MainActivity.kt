@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import ru.apphabit.R
+import ru.apphabit.features.collections.view.HomeFragment
 import ru.apphabit.features.habits.view.AddHabitFragment
 import ru.apphabit.features.habits.view.AllHabitsFragment
 import ru.apphabit.features.profile.view.ProfileFragment
@@ -63,21 +64,16 @@ class MainActivity : AppCompatActivity() {
 //        super.onCreate(savedInstanceState)
 //        setContentView(R.layout.check_up)
 //
-//        // Найти RecyclerView
 //        val recyclerView = findViewById<RecyclerView>(R.id.calendarRecyclerView)
 //
-//        // Установить горизонтальный LinearLayoutManager
 //        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 //
-//        // Создать адаптер
 //        val dataList = generateDateList() // Ваши данные для календаря
 //        val adapter = CalendarAdapter(dataList)
 //
-//        // Установить адаптер для RecyclerView
 //        recyclerView.adapter = adapter
 //    }
 //
-//    // Пример генерации данных
 //    private fun generateDateList(): List<CalendarItem> {
 //        return listOf(
 //            CalendarItem("Пн", "1"),

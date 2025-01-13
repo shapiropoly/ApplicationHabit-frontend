@@ -10,7 +10,7 @@ interface HabitApiService {
     suspend fun getAllHabits(): Response<List<Habit>>
 
     @POST("add_habit")
-    suspend fun addHabit(@Body habit: Habit): Response<Habit>
+    fun addHabit(@Body habit: Habit): Call<Habit>
 
     @GET("habits/{id}")
     suspend fun getHabitById(@Path("id") id: Int): Response<Habit>

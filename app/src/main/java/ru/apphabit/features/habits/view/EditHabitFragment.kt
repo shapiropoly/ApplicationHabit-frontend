@@ -21,7 +21,6 @@ class EditHabitFragment : Fragment() {
     private val vmHabits: HabitsVM by viewModel()
     private val vmCategories: CategoriesVM by viewModel()
 
-    private var selectedImageUri: String = ""
     private var selectedCategoryId by Delegates.notNull<Int>()
     private var habitId: Int = 0
 
@@ -48,7 +47,6 @@ class EditHabitFragment : Fragment() {
 
         val inputTitle = view.findViewById<EditText>(R.id.title_habit_edit)
         val inputDescription = view.findViewById<EditText>(R.id.description_habit_edit)
-        val uploadPhotoButton = view.findViewById<TextView>(R.id.upload_photo_habit_edit_text)
         val imageEditHabit = view.findViewById<ImageView>(R.id.habit_edit_image)
         val categorySpinner = view.findViewById<Spinner>(R.id.category_habit_edit_spinner)
         val updateButton = view.findViewById<Button>(R.id.button_habit_update)
@@ -56,21 +54,15 @@ class EditHabitFragment : Fragment() {
         val toolbar = view.findViewById<MaterialToolbar>(R.id.habit_edit_toolbar)
 
         toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
-            (activity as? MainActivity)?.setBottomNavVisibility(true)
+            changeFragment()
         }
 
         setupCategorySpinner(categorySpinner)
-        loadHabitData(inputTitle, inputDescription, imageEditHabit)
+        loadHabitData(inputTitle, inputDescription)
 
-        uploadPhotoButton.setOnClickListener { pickImage() }
-        updateButton.setOnClickListener { updateHabit(inputTitle, inputDescription) }
+        updateButton.setOnClickListener { updateHabit(inputTitle, inputDescription, imageEditHabit) }
         deleteButton.setOnClickListener { deleteHabit() }
     }
-
-
-
-
 
     private fun setupCategorySpinner(spinner: Spinner) {
         vmCategories.categories.observe(viewLifecycleOwner) { categories ->
@@ -117,20 +109,15 @@ class EditHabitFragment : Fragment() {
     }
 
 
-    private fun loadHabitData(titleField: EditText, descriptionField: EditText, imageView: ImageView) {
+    private fun loadHabitData(titleField: EditText, descriptionField: EditText) {
         vmHabits.getHabitById(habitId)
         vmHabits.habit.observe(viewLifecycleOwner) { habit ->
             titleField.setText(habit.title)
             descriptionField.setText(habit.description)
-            selectedImageUri = habit.image ?: ""
-            if (selectedImageUri.isNotEmpty()) {
-                imageView.setImageURI(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon()
-                    .appendEncodedPath(selectedImageUri).build())
-            }
         }
     }
 
-    private fun updateHabit(titleField: EditText, descriptionField: EditText) {
+    private fun updateHabit(titleField: EditText, descriptionField: EditText, imageEditHabit: ImageView) {
         val title = titleField.text.toString().trim()
         val description = descriptionField.text.toString().trim()
 
@@ -139,54 +126,38 @@ class EditHabitFragment : Fragment() {
             return
         }
 
+        when (selectedCategoryId) {
+            1 -> imageEditHabit.setImageResource(R.drawable.image_health)
+            2 -> imageEditHabit.setImageResource(R.drawable.image_hobby)
+            3 -> imageEditHabit.setImageResource(R.drawable.image_sleep)
+            else -> imageEditHabit.setImageResource(R.drawable.image_another)
+        }
+
         val updatedHabit = Habit(
             id = habitId,
             title = title,
             description = description,
-            image = selectedImageUri,
+            image = "image_another",
             categoryId = selectedCategoryId
         )
 
-        vmHabits.updateHabit(habitId, updatedHabit)
+        vmHabits.updateHabit(habitId, updatedHabit, ::changeFragment)
         Toast.makeText(requireContext(), "Привычка обновлена", Toast.LENGTH_SHORT).show()
-        backActivity()
     }
 
     private fun deleteHabit() {
-        vmHabits.deleteHabit(habitId)
+        vmHabits.deleteHabit(habitId, ::changeFragment)
         Toast.makeText(requireContext(), "Привычка удалена", Toast.LENGTH_SHORT).show()
-        requireActivity().onBackPressed()
-        backActivity()
     }
 
-    private fun pickImage() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE)
-    }
-
-    private fun backActivity() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, AllHabitsFragment())
-            .addToBackStack(null)
-            .commit()
-
-        (activity as? MainActivity)?.setBottomNavVisibility(false)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data
-            if (uri != null) {
-                selectedImageUri = uri.toString()
-                view?.findViewById<ImageView>(R.id.habit_edit_image)?.setImageURI(uri)
-            }
+    private fun changeFragment() {
+        parentFragment?.requireFragmentManager()?.beginTransaction()?.apply {
+            replace(R.id.main_fragment, AllHabitsFragment.newInstance())
+            commit()
         }
     }
 
     companion object {
-        private const val REQUEST_CODE_PICK_IMAGE = 1001
         private const val HABIT_ID = "id"
 
         @JvmStatic

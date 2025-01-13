@@ -1,22 +1,22 @@
 package ru.apphabit.features.collections.view
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
 import ru.apphabit.app.MainActivity
 import ru.apphabit.features.collections.model.Collection
 import ru.apphabit.features.habits.model.Habit
+import ru.apphabit.features.habits.view.AddHabitFragment
 import ru.apphabit.features.habits.view.AllHabitsFragment
 import ru.apphabit.features.habits.view.HabitsVM
-import kotlin.properties.Delegates
 
 class CollectionEditFragment : Fragment() {
 
@@ -24,8 +24,6 @@ class CollectionEditFragment : Fragment() {
     private val vmCollections: CollectionsVM by viewModel()
 
     private var collectionHabitsList: List<Habit> = listOf()
-    private var selectedImageUri: String = ""
-    private var selectedHabitId by Delegates.notNull<Int>()
     private var collectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,125 +40,59 @@ class CollectionEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        collectionId.takeIf { it != 0 }?.let { id ->
-            vmCollections.getCollectionById(id)
-        } ?: run {
-            Toast.makeText(requireContext(), "Ошибка: Не удалось загрузить данные коллекции", Toast.LENGTH_SHORT).show()
+        val inputTitle = view.findViewById<EditText>(R.id.title_collection_edit)
+        val inputDescription = view.findViewById<EditText>(R.id.description_collection_edit)
+        val imageEditCollection = view.findViewById<ImageView>(R.id.collection_edit_image)
+        val buttonSelectHabitsList = view.findViewById<Button>(R.id.select_list_habits_to_collection)
+        val updateButton = view.findViewById<Button>(R.id.button_collection_update)
+        val deleteButton = view.findViewById<Button>(R.id.button_collection_delete)
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.collection_edit_toolbar)
+
+
+        toolbar.setNavigationOnClickListener {
+            changeFragment()
         }
 
         vmCollections.getCollectionById(collectionId)
         vmHabits.getAllHabits()
 
-
-        val inputTitle = view.findViewById<EditText>(R.id.title_collection_edit)
-        val inputDescription = view.findViewById<EditText>(R.id.description_collection_edit)
-        val uploadPhotoButton = view.findViewById<TextView>(R.id.upload_photo_collection_edit_text)
-        val imageEditCollection = view.findViewById<ImageView>(R.id.collection_edit_image)
-        val habitListSpinner = view.findViewById<Spinner>(R.id.select_list_habits_to_collection)
-        val updateButton = view.findViewById<Button>(R.id.button_collection_update)
-        val deleteButton = view.findViewById<Button>(R.id.button_collection_delete)
-        val toolbar = view.findViewById<MaterialToolbar>(R.id.collection_edit_toolbar)
-        val selectHabitsButton = view.findViewById<Button>(R.id.select_habits_to_collection_button)
-
-        toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
-            (activity as? MainActivity)?.setBottomNavVisibility(true)
-        }
-
-        vmCollections.collection.observe(viewLifecycleOwner) { collection ->
-            collectionHabitsList = collection.habits
-        }
-
-        vmHabits.habits.observe(viewLifecycleOwner) { allHabits ->
-            if (!allHabits.isNullOrEmpty()) {
-                setupHabitSelectionDialog(selectHabitsButton, allHabits)
-            }
-        }
-
-        setupCollectionsSpinner(habitListSpinner)
+        setupHabitsList(buttonSelectHabitsList)
         loadCollectionData(inputTitle, inputDescription, imageEditCollection)
 
         updateButton.setOnClickListener { updateCollection(inputTitle, inputDescription, collectionHabitsList) }
         deleteButton.setOnClickListener { deleteCollection() }
     }
 
-    private fun setupHabitSelectionDialog(selectHabitsButton: Button, allHabits: List<Habit>) {
-        val habitTitles = allHabits.map { it.title }.toTypedArray()
-        val selectedHabits = collectionHabitsList.toMutableList()
-        val selectedIndices = BooleanArray(allHabits.size) { index ->
-            selectedHabits.any { it.id == allHabits[index].id }
-        }
+    private fun setupHabitsList(buttonSelectHabitsList: Button) {
+        buttonSelectHabitsList.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_edit_collection, HabitListFragment.newInstance(collectionId))
+                .addToBackStack(null)
+                .commit()
 
-        selectHabitsButton.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Выберите привычки")
-                .setMultiChoiceItems(habitTitles, selectedIndices) { _, index, isChecked ->
-                    val habit = allHabits[index]
-                    if (isChecked) {
-                        selectedHabits.add(habit)
-                    } else {
-                        selectedHabits.remove(habit)
-                    }
-                }
-                .setPositiveButton("ОК") { _, _ ->
-                    val selectedTitles = selectedHabits.map { it.title }
-                    selectHabitsButton.text = selectedTitles.joinToString(", ")
-                    collectionHabitsList = selectedHabits
-                }
-                .setNegativeButton("Отмена", null)
-                .show()
+            (activity as? MainActivity)?.setBottomNavVisibility(false)
         }
     }
 
-    private fun setupCollectionsSpinner(spinner: Spinner) {
-        vmHabits.habits.observe(viewLifecycleOwner) { habits ->
-            if (habits.isNullOrEmpty()) {
-                return@observe
-            }
-
-            val habitTitles = habits.map { it.title }
-            val selectedHabits = mutableSetOf<Habit>()
-            val selectedIndices = BooleanArray(habits.size)
-
-            spinner.setOnClickListener {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Выберите привычки")
-                    .setMultiChoiceItems(habitTitles.toTypedArray(), selectedIndices) { _, index, isChecked ->
-                        if (isChecked) {
-                            selectedHabits.add(habits[index])
-                        } else {
-                            selectedHabits.remove(habits[index])
-                        }
-                    }
-                    .setPositiveButton("ОК") { _, _ ->
-                        val selectedTitles = selectedHabits.map { it.title }
-                        Toast.makeText(requireContext(), "Выбрано: ${selectedTitles.joinToString(", ")}", Toast.LENGTH_SHORT).show()
-
-                        (spinner as? TextView)?.text = selectedTitles.joinToString(", ")
-                        collectionHabitsList = selectedHabits.toList()
-                    }
-                    .setNegativeButton("Отмена", null)
-                    .show()
-            }
-        }
-    }
-
-
-    private fun loadCollectionData(titleField: EditText, descriptionField: EditText, imageView: ImageView) {
-        vmCollections.getCollectionById(collectionId)
+    private fun loadCollectionData(
+        titleField: EditText,
+        descriptionField: EditText,
+        imageView: ImageView
+    ) {
         vmCollections.collection.observe(viewLifecycleOwner) { collection ->
-            titleField.setText(collection.title)
-            descriptionField.setText(collection.description)
-            selectedImageUri = collection.image ?: ""
-            if (selectedImageUri.isNotEmpty()) {
-                imageView.setImageURI(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon()
-                    .appendEncodedPath(selectedImageUri).build())
+            collection?.let {
+                titleField.setText(it.title)
+                descriptionField.setText(it.description)
+                // Загрузка изображения, если требуется
             }
         }
     }
 
-    private fun updateCollection(titleField: EditText, descriptionField: EditText, collectionHabitsList: List<Habit>) {
+    private fun updateCollection(
+        titleField: EditText,
+        descriptionField: EditText,
+        collectionHabitsList: List<Habit>
+    ) {
         val title = titleField.text.toString().trim()
         val description = descriptionField.text.toString().trim()
 
@@ -173,31 +105,31 @@ class CollectionEditFragment : Fragment() {
             id = collectionId,
             title = title,
             description = description,
-            image = selectedImageUri,
-            habits = collectionHabitsList
+            habits = collectionHabitsList,
+            image = ""
         )
 
         vmCollections.updateCollection(collectionId, updatedCollection, collectionHabitsList)
 
         Toast.makeText(requireContext(), "Коллекция обновлена", Toast.LENGTH_SHORT).show()
-        backActivity()
+        changeFragment()
     }
-
 
     private fun deleteCollection() {
         vmCollections.deleteCollection(collectionId)
         Toast.makeText(requireContext(), "Коллекция удалена", Toast.LENGTH_SHORT).show()
-        requireActivity().onBackPressed()
-        backActivity()
+        changeFragment()
     }
 
-    private fun backActivity() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_main, AllHabitsFragment())
-            .addToBackStack(null)
-            .commit()
+    private fun changeFragment() {
+        parentFragment?.requireFragmentManager()?.beginTransaction()?.apply {
+            replace(R.id.main_fragment, HomeFragment.newInstance())
+            commit()
+        }
+    }
 
-        (activity as? MainActivity)?.setBottomNavVisibility(false)
+    private fun backToPreviousFragment() {
+        requireActivity().onBackPressed()
     }
 
     companion object {
