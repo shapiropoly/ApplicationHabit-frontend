@@ -122,14 +122,11 @@ class CollectionEditFragment : Fragment() {
     }
 
     private fun changeFragment() {
-        parentFragment?.requireFragmentManager()?.beginTransaction()?.apply {
+        parentFragmentManager.beginTransaction().apply {
             replace(R.id.main_fragment, HomeFragment.newInstance())
+            addToBackStack(null)
             commit()
         }
-    }
-
-    private fun backToPreviousFragment() {
-        requireActivity().onBackPressed()
     }
 
     companion object {

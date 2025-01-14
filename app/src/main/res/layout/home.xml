@@ -19,7 +19,7 @@
                 android:id="@+id/greeting_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Привет, Марк 👋"
+                android:text="Привет 👋"
                 android:fontFamily="@font/gilroy_medium"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
@@ -104,7 +104,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:padding="5dp"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="90dp"
                 tools:listitem="@layout/item_for_home_habit"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

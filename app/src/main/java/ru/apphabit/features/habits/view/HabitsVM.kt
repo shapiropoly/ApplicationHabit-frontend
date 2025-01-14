@@ -21,6 +21,9 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
     private val _habit = MutableLiveData<Habit>()
     val habit: LiveData<Habit> get() = _habit
 
+    private val _filteredHabit = MutableLiveData<List<Habit>>()
+    val filteredHabit: LiveData<List<Habit>> get() = _filteredHabit
+
 
     init {
         getAllHabits()
@@ -57,15 +60,13 @@ class HabitsVM (private val repository: HabitRepository) : ViewModel() {
         }
     }
 
-    fun getHabitsByCollectionId(collectionId: Int): List<Habit> {
-        var filteredHabits: List<Habit> = emptyList()
+    fun getHabitsByCollectionId(collectionId: Int) {
         viewModelScope.launch {
-            filteredHabits = repository.getHabitsByCollectionId(collectionId)
-            Log.d("HabitsVM", "List habits received: $filteredHabits")
+            val habitsList = repository.getHabitsByCollectionId(collectionId)
+            Log.d("HabitsVM", "Filtered habits received: $habitsList")
+            _filteredHabit.value = habitsList
         }
-        return filteredHabits
     }
-
 
     suspend fun getHabitByIdSuspend(id: Int): Habit {
         return repository.getHabitById(id)

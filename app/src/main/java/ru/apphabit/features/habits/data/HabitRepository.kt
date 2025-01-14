@@ -46,6 +46,7 @@ class HabitRepositoryImpl(private val service: HabitApiService): HabitRepository
 
     override suspend fun getHabitsByCollectionId(collectionId: Int): List<Habit> {
         val body = service.getHabitsByCollectionId(collectionId).body()!!
+        Log.d("HabitsVM", "Filtered habits: $body")
         return body
     }
 

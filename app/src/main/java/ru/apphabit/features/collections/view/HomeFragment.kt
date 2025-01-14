@@ -1,5 +1,6 @@
 package ru.apphabit.features.collections.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,10 +23,13 @@ class HomeFragment : Fragment() {
     private val vmHabits: HabitsVM by viewModel()
 
     private lateinit var collectionAdapter: CollectionsAdapter
-    private var selectCollectionId: Int = 0
-    private var filteredHabits : List<Habit> = emptyList()
-    private var categoriesHabits: MutableMap<Int, String?> = mutableMapOf()
+    private lateinit var habitHomeAdapter: HomeHabitsAdapter
 
+    private var categoriesHabits: MutableMap<Int, String?> = mutableMapOf()
+    private var originalHabits: List<Habit?> = emptyList()
+
+    private var isFiltered = false
+    private var selectedCollectionId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,6 +37,7 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.home, container, false)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -45,36 +50,38 @@ class HomeFragment : Fragment() {
             val catMap = categories.associate { category ->
                 category.id to category.title
             }
-            for (category in catMap) {
-                categoriesHabits[category.key] = category.value
-            }
+            categoriesHabits.clear()
+            categoriesHabits.putAll(catMap)
         }
 
-        val habitHomeAdapter = HomeHabitsAdapter(emptyList(), childFragmentManager, categoriesHabits)
+        habitHomeAdapter = HomeHabitsAdapter(emptyList(), childFragmentManager, categoriesHabits)
 
-        collectionAdapter = CollectionsAdapter(mutableListOf(), childFragmentManager) { collectionId ->
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_main, CollectionEditFragment.newInstance(collectionId))
-                .addToBackStack(null)
-                .commit()
+        vmHabits.habits.observe(viewLifecycleOwner) { habits ->
+            originalHabits = habits
+            Log.d("Filter", "originalHabits $originalHabits")
+            applyFilters()
         }
+
+        collectionAdapter = CollectionsAdapter(mutableListOf(), childFragmentManager,
+            onCollectionInfoClick = { collectionId ->
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_main, CollectionEditFragment.newInstance(collectionId))
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onCollectionFilterClick = { collectionId ->
+                selectedCollectionId = collectionId
+                if (collectionId != null && !isFiltered) {
+                    Log.d("Filter", "Здесь прошел")
+                    applyFilters()
+                } else {
+                    resetFilter()
+                }
+            })
 
         recyclerViewCollections.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             adapter = collectionAdapter
-        }
-
-        val onCollectionClick: (Int?) -> Unit = { collectionId ->
-            collectionId?.let { id ->
-                filteredHabits = vmHabits.getHabitsByCollectionId(id)
-
-                try {
-                    Log.d("Habits", "Loaded habits for collection $id: $filteredHabits")
-                    habitHomeAdapter.updateHabits(filteredHabits)
-                } catch (e: Exception) {
-                    Log.e("Habits", "Error loading habits: ${e.message}", e)
-                }
-            }
         }
 
         recyclerViewHabits.apply {
@@ -84,12 +91,11 @@ class HomeFragment : Fragment() {
         }
 
         vmCollections.collections.observe(viewLifecycleOwner) { collections ->
-            Log.d("CollectionsFragment", "Observed collections: $collections")
             collectionAdapter.updateCategories(collections)
         }
 
         vmHabits.habits.observe(viewLifecycleOwner) { habits ->
-            Log.d("CollectionsFragment", "Observed collections: $habits")
+            originalHabits = habits
             habitHomeAdapter.updateHabits(habits)
         }
 
@@ -97,8 +103,32 @@ class HomeFragment : Fragment() {
         vmHabits.getAllHabits()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun resetFilter() {
+        isFiltered = false
+        selectedCollectionId = null
+        Log.d("Filter", "Resetting filter to show all habits")
+        habitHomeAdapter.updateHabits(originalHabits)
+    }
+
+    private fun applyFilters() {
+        if (selectedCollectionId != null) {
+            vmHabits.getHabitsByCollectionId(selectedCollectionId!!)
+        } else {
+            resetFilter()
+        }
+
+        vmHabits.filteredHabit.observe(viewLifecycleOwner) { filteredHabits ->
+            Log.d("Filter", "Filtered habits received: $filteredHabits")
+            habitHomeAdapter.updateHabits(filteredHabits)
+        }
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() = HomeFragment()
     }
 }
+
+
+

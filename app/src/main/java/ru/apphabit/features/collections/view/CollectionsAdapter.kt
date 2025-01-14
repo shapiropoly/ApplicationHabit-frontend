@@ -2,6 +2,7 @@ package ru.apphabit.features.collections.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,8 @@ import ru.apphabit.features.collections.model.Collection
 class CollectionsAdapter (
     private var collections: MutableList<Collection?> = mutableListOf(),
     val fragmentManager: FragmentManager,
-    private val onCollectionClick: (Int?) -> Unit
+    private val onCollectionInfoClick: (Int?) -> Unit,
+    private val onCollectionFilterClick: (Int?) -> Unit
 ) : RecyclerView.Adapter<CollectionsAdapter.CollectionsHolder>() {
 
     private var selectedCollectionId: Int? = null
@@ -48,25 +50,26 @@ class CollectionsAdapter (
     inner class CollectionsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val collectionTitle: TextView = itemView.findViewById(R.id.card_collection_title)
         private val cardCollection: ImageView = itemView.findViewById(R.id.card_collection_background)
+        private val imageCollectionInfo: ImageView = itemView.findViewById(R.id.icon_card_info_collection)
 
         @SuppressLint("NotifyDataSetChanged")
         fun bind(id: Int, title: String, context: Context) {
             collectionTitle.text = title
 
-            val color = if (selectedCollectionId == id) R.color.light_green else R.color.light_gray
+            Log.d("Check color", "Check selectedCollectionId: $selectedCollectionId")
+            Log.d("Check color", "Check id: $id")
+            val color = if (selectedCollectionId == id) R.color.light_green else R.color.light_green
             cardCollection.backgroundTintList = ContextCompat.getColorStateList(context, color)
 
-            cardCollection.setOnClickListener {
-                selectedCollectionId = if (selectedCollectionId == id) null else id
-                onCollectionClick(selectedCollectionId)
+            imageCollectionInfo.setOnClickListener {
+                onCollectionInfoClick(id)
                 notifyDataSetChanged()
             }
 
-            itemView.setOnClickListener {
-//                fragmentManager.beginTransaction().apply {
-//                    replace(R.id.fragment_main, CollectionEditFragment.newInstance(selectedCollectionId))
-//                    commit()
-//                }
+            cardCollection.setOnClickListener {
+                selectedCollectionId = if (selectedCollectionId == id) null else id
+                onCollectionFilterClick(selectedCollectionId)
+                notifyDataSetChanged()
             }
         }
     }
