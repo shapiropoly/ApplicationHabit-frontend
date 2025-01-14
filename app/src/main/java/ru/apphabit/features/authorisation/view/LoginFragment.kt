@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
+import ru.apphabit.features.collections.view.HomeFragment
 import ru.apphabit.features.profile.view.UsersVM
 
 class LoginFragment : Fragment() {
@@ -43,6 +44,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
             } else {
                 vmUsers.getUserByEmail(email)
+                changeFragment()
             }
         }
 
@@ -52,5 +54,17 @@ class LoginFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    private fun changeFragment() {
+        requireFragmentManager().beginTransaction().apply {
+            replace(R.id.main_fragment, HomeFragment.newInstance())
+            commit()
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = LoginFragment()
     }
 }

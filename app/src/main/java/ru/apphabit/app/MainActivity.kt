@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import ru.apphabit.R
+import ru.apphabit.features.authorisation.view.LoginFragment
 import ru.apphabit.features.collections.view.HomeFragment
 import ru.apphabit.features.habits.view.AddHabitFragment
 import ru.apphabit.features.habits.view.AllHabitsFragment
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setCurrentFragment(AllHabitsFragment.newInstance())
+        setCurrentFragment(LoginFragment.newInstance())
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 

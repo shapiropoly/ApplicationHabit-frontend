@@ -13,6 +13,7 @@ import ru.apphabit.R
 import ru.apphabit.app.MainActivity
 import ru.apphabit.features.profile.model.User
 import ru.apphabit.features.authorisation.view.RegistrationFragment
+import ru.apphabit.features.habits.view.AllHabitsFragment
 import java.time.LocalDate
 
 class SettingsFragment : Fragment() {
@@ -56,8 +57,7 @@ class SettingsFragment : Fragment() {
         val toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar_settings)
 
         toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
-            (activity as? MainActivity)?.setBottomNavVisibility(true)
+            changeFragment()
         }
 
         loadUserData(profileNameEdit, profileUsernameEdit, profileEmailEdit)
@@ -117,7 +117,7 @@ class SettingsFragment : Fragment() {
             name = name,
             username = username,
             email = email,
-            password = password,
+            password = "password",
             dateRegistration = dateRegistration,
             dateLastActivity = dateLastActivity
         )
@@ -128,7 +128,7 @@ class SettingsFragment : Fragment() {
         Log.d("UpdateUser", "UpdateUser: $vmUsers");
 
         Toast.makeText(requireContext(), "Аккаунт обновлен", Toast.LENGTH_SHORT).show()
-        backActivityUpdate()
+        changeFragment()
     }
 
     private fun deleteUser() {
@@ -139,22 +139,18 @@ class SettingsFragment : Fragment() {
         backActivityDelete()
     }
 
-    private fun backActivityUpdate() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ProfileFragment())
-            .addToBackStack(null)
-            .commit()
-
-        (activity as? MainActivity)?.setBottomNavVisibility(false)
+    private fun backActivityDelete() {
+        requireFragmentManager().beginTransaction().apply {
+            replace(R.id.main_fragment, RegistrationFragment())
+            commit()
+        }
     }
 
-    private fun backActivityDelete() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, RegistrationFragment())
-            .addToBackStack(null)
-            .commit()
-
-        (activity as? MainActivity)?.setBottomNavVisibility(false)
+    private fun changeFragment() {
+        requireFragmentManager().beginTransaction().apply {
+            replace(R.id.main_fragment, ProfileFragment.newInstance(userId))
+            commit()
+        }
     }
 
     companion object {

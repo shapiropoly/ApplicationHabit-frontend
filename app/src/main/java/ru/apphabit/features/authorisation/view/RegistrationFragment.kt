@@ -12,8 +12,10 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.apphabit.R
+import ru.apphabit.features.collections.view.HomeFragment
 import ru.apphabit.features.habits.view.HabitsVM
 import ru.apphabit.features.profile.model.User
+import ru.apphabit.features.profile.view.ProfileFragment
 import ru.apphabit.features.profile.view.UsersVM
 import java.time.LocalDate
 
@@ -57,15 +59,28 @@ class RegistrationFragment : Fragment() {
             )
 
             vmUsers.addUser(user)
+            changeFragment()
         }
 
         loginLink.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, LoginFragment())
-                .addToBackStack(null)
-                .commit()
+            requireFragmentManager().beginTransaction().apply {
+                replace(R.id.main_fragment, LoginFragment.newInstance())
+                commit()
+            }
         }
 
         return view
+    }
+
+    private fun changeFragment() {
+        requireFragmentManager().beginTransaction().apply {
+            replace(R.id.main_fragment, HomeFragment.newInstance())
+            commit()
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = RegistrationFragment()
     }
 }
