@@ -1,4 +1,4 @@
-⚙️ The application is currently in development ⚙️
+⚙️ The application is in the final stage ⚙️
 
 Frontend for a habit tracking app.
 
